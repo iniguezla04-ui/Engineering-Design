@@ -1190,6 +1190,14 @@
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid 2e8c1859-a733-4870-9997-123bd08b6f11)
   )
+  (text "4/1/2026" (at 503.555 403.86 0)
+    (effects (font (size 1.27 1.27)) (justify left bottom))
+    (uuid 41ad3172-9c63-4b19-8af6-c28323115ee8)
+  )
+  (text "skateboard controller test board" (at 483.87 400.05 0)
+    (effects (font (size 1.27 1.27)) (justify left bottom))
+    (uuid 952da42a-bc58-4a2d-887c-5097e32b32f0)
+  )
   (text "vddio power block\n" (at 363.22 177.165 0)
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid 9ae8fb36-982e-4d2f-891f-3332860097b6)
@@ -1201,6 +1209,10 @@
   (text "vdd power block" (at 396.24 182.88 0)
     (effects (font (size 1.27 1.27)) (justify left bottom))
     (uuid be2cef20-749a-4475-bdfd-9713834f77b3)
+  )
+  (text "Juanpablo Mora" (at 490.22 386.715 0)
+    (effects (font (size 6 6)) (justify left bottom))
+    (uuid c69d9cae-df2d-4d51-b1a2-605311a7569b)
   )
 
   (global_label "SPI_CS" (shape output) (at 227.965 189.865 180) (fields_autoplaced)
@@ -1348,7 +1360,7 @@
     (pin "1" (uuid 3d9412ba-f696-4365-87e5-7ad7d5404aee))
     (pin "2" (uuid 536fac60-b6dd-4588-bd7d-e6d618217c6a))
     (instances
-      (project "skateboard_main_controller"
+      (project "skateboard_main_controller_kicad"
         (path "/729eee83-acb9-4794-a583-aef43df0c6ef"
           (reference "C5") (unit 1)
         )
@@ -1374,7 +1386,7 @@
     (pin "1" (uuid 9c48e67a-ffb7-4413-8019-494426346109))
     (pin "2" (uuid 279c1b71-0281-475d-81af-cb9358e71dcb))
     (instances
-      (project "skateboard_main_controller"
+      (project "skateboard_main_controller_kicad"
         (path "/729eee83-acb9-4794-a583-aef43df0c6ef"
           (reference "C6") (unit 1)
         )
@@ -1399,7 +1411,7 @@
     )
     (pin "1" (uuid 48f57248-f277-4eb8-b86a-b704b71dc579))
     (instances
-      (project "skateboard_main_controller"
+      (project "skateboard_main_controller_kicad"
         (path "/729eee83-acb9-4794-a583-aef43df0c6ef"
           (reference "TP1") (unit 1)
         )
@@ -1424,7 +1436,7 @@
     )
     (pin "1" (uuid 57b24f45-3331-4322-ac6a-775a4d7f1a67))
     (instances
-      (project "skateboard_main_controller"
+      (project "skateboard_main_controller_kicad"
         (path "/729eee83-acb9-4794-a583-aef43df0c6ef"
           (reference "TP4") (unit 1)
         )
@@ -1449,7 +1461,7 @@
     )
     (pin "1" (uuid 11b517b2-6dc1-41f6-a2ab-149453f3e3e7))
     (instances
-      (project "skateboard_main_controller"
+      (project "skateboard_main_controller_kicad"
         (path "/729eee83-acb9-4794-a583-aef43df0c6ef"
           (reference "#PWR03") (unit 1)
         )
@@ -1474,7 +1486,7 @@
     )
     (pin "1" (uuid e737bf57-6982-44bd-b10c-52bb253c875f))
     (instances
-      (project "skateboard_main_controller"
+      (project "skateboard_main_controller_kicad"
         (path "/729eee83-acb9-4794-a583-aef43df0c6ef"
           (reference "#PWR010") (unit 1)
         )
@@ -1499,7 +1511,7 @@
     )
     (pin "1" (uuid 53534b0f-095a-480c-83ae-697d7973acc4))
     (instances
-      (project "skateboard_main_controller"
+      (project "skateboard_main_controller_kicad"
         (path "/729eee83-acb9-4794-a583-aef43df0c6ef"
           (reference "TP3") (unit 1)
         )
@@ -1524,7 +1536,7 @@
     )
     (pin "1" (uuid 89a65a55-c95d-473b-8b8d-cfdc250afc3a))
     (instances
-      (project "skateboard_main_controller"
+      (project "skateboard_main_controller_kicad"
         (path "/729eee83-acb9-4794-a583-aef43df0c6ef"
           (reference "J3") (unit 1)
         )
@@ -1550,7 +1562,7 @@
     (pin "1" (uuid 4cf7e526-f7ec-419d-a89a-68900b02ffd5))
     (pin "2" (uuid f4300078-923c-4133-8f6c-c0bde23b55ab))
     (instances
-      (project "skateboard_main_controller"
+      (project "skateboard_main_controller_kicad"
         (path "/729eee83-acb9-4794-a583-aef43df0c6ef"
           (reference "J1") (unit 1)
         )
@@ -1576,7 +1588,7 @@
     (pin "1" (uuid 98016f44-2bc6-411b-a3a5-68b79b1fdea6))
     (pin "2" (uuid f585b774-4402-4988-9f19-c75ff5a12d07))
     (instances
-      (project "skateboard_main_controller"
+      (project "skateboard_main_controller_kicad"
         (path "/729eee83-acb9-4794-a583-aef43df0c6ef"
           (reference "C7") (unit 1)
         )
@@ -1601,7 +1613,7 @@
     )
     (pin "1" (uuid bbe49740-cd91-408c-8282-8bc8128d963c))
     (instances
-      (project "skateboard_main_controller"
+      (project "skateboard_main_controller_kicad"
         (path "/729eee83-acb9-4794-a583-aef43df0c6ef"
           (reference "#PWR05") (unit 1)
         )
@@ -1627,7 +1639,7 @@
     (pin "1" (uuid be777609-30bb-4372-9a85-315a94b56fed))
     (pin "2" (uuid 9db55051-b92e-4dfb-8d8c-6eefc0bffa29))
     (instances
-      (project "skateboard_main_controller"
+      (project "skateboard_main_controller_kicad"
         (path "/729eee83-acb9-4794-a583-aef43df0c6ef"
           (reference "C4") (unit 1)
         )
@@ -1708,7 +1720,7 @@
     (pin "8" (uuid 391b6100-db99-4246-9062-5ac3eeec4af4))
     (pin "9" (uuid 57fa3692-6126-41fe-8076-3234445a2a52))
     (instances
-      (project "skateboard_main_controller"
+      (project "skateboard_main_controller_kicad"
         (path "/729eee83-acb9-4794-a583-aef43df0c6ef"
           (reference "U1") (unit 1)
         )
@@ -1733,7 +1745,7 @@
     )
     (pin "1" (uuid 8c9ef019-fc80-4eaf-9058-4244e92ac5e7))
     (instances
-      (project "skateboard_main_controller"
+      (project "skateboard_main_controller_kicad"
         (path "/729eee83-acb9-4794-a583-aef43df0c6ef"
           (reference "#PWR011") (unit 1)
         )
@@ -1759,7 +1771,7 @@
     (pin "1" (uuid 6acfbb6e-98d4-4e26-bcd6-c027eea32946))
     (pin "2" (uuid a2ee735c-b9a6-416d-a4e8-b109c5817e08))
     (instances
-      (project "skateboard_main_controller"
+      (project "skateboard_main_controller_kicad"
         (path "/729eee83-acb9-4794-a583-aef43df0c6ef"
           (reference "C3") (unit 1)
         )
@@ -1789,7 +1801,7 @@
     (pin "5" (uuid 114b94f3-2d28-4694-970d-a9b725620f19))
     (pin "6" (uuid 7c63cff6-8d93-44fd-8563-13f3b53f481f))
     (instances
-      (project "skateboard_main_controller"
+      (project "skateboard_main_controller_kicad"
         (path "/729eee83-acb9-4794-a583-aef43df0c6ef"
           (reference "J2") (unit 1)
         )
@@ -1814,7 +1826,7 @@
     )
     (pin "1" (uuid 2e21b4cb-b5f5-49a9-9cc8-960bc21c0cba))
     (instances
-      (project "skateboard_main_controller"
+      (project "skateboard_main_controller_kicad"
         (path "/729eee83-acb9-4794-a583-aef43df0c6ef"
           (reference "TP2") (unit 1)
         )
@@ -1839,7 +1851,7 @@
     )
     (pin "1" (uuid f871494b-dbef-4b30-bb29-f20c2e309bd2))
     (instances
-      (project "skateboard_main_controller"
+      (project "skateboard_main_controller_kicad"
         (path "/729eee83-acb9-4794-a583-aef43df0c6ef"
           (reference "#PWR01") (unit 1)
         )
@@ -1864,7 +1876,7 @@
     )
     (pin "1" (uuid 945b8322-58a4-4e81-9881-70a222e1f49b))
     (instances
-      (project "skateboard_main_controller"
+      (project "skateboard_main_controller_kicad"
         (path "/729eee83-acb9-4794-a583-aef43df0c6ef"
           (reference "J4") (unit 1)
         )
@@ -1889,7 +1901,7 @@
     )
     (pin "1" (uuid c59b6e8a-1aa5-4bce-bcfa-dff779af2e4a))
     (instances
-      (project "skateboard_main_controller"
+      (project "skateboard_main_controller_kicad"
         (path "/729eee83-acb9-4794-a583-aef43df0c6ef"
           (reference "#PWR08") (unit 1)
         )
@@ -1915,7 +1927,7 @@
     (pin "1" (uuid 31e24ef0-582b-4416-822a-259cb965d00d))
     (pin "2" (uuid f910e2bf-dab2-4892-be6a-c5194505a4a1))
     (instances
-      (project "skateboard_main_controller"
+      (project "skateboard_main_controller_kicad"
         (path "/729eee83-acb9-4794-a583-aef43df0c6ef"
           (reference "C1") (unit 1)
         )
@@ -1940,7 +1952,7 @@
     )
     (pin "1" (uuid 9aee5c6e-7f95-4c5b-b2c3-15f756c0129e))
     (instances
-      (project "skateboard_main_controller"
+      (project "skateboard_main_controller_kicad"
         (path "/729eee83-acb9-4794-a583-aef43df0c6ef"
           (reference "#PWR012") (unit 1)
         )
@@ -1965,7 +1977,7 @@
     )
     (pin "1" (uuid 58c39e0d-49f5-43b5-902d-68b6b97136ac))
     (instances
-      (project "skateboard_main_controller"
+      (project "skateboard_main_controller_kicad"
         (path "/729eee83-acb9-4794-a583-aef43df0c6ef"
           (reference "#PWR02") (unit 1)
         )
@@ -1990,7 +2002,7 @@
     )
     (pin "1" (uuid f41f88d4-3efa-4bf9-a523-b7de58c03783))
     (instances
-      (project "skateboard_main_controller"
+      (project "skateboard_main_controller_kicad"
         (path "/729eee83-acb9-4794-a583-aef43df0c6ef"
           (reference "#PWR09") (unit 1)
         )
@@ -2015,7 +2027,7 @@
     )
     (pin "1" (uuid 743c4cb0-d522-4714-b76d-7c5a15fde3cf))
     (instances
-      (project "skateboard_main_controller"
+      (project "skateboard_main_controller_kicad"
         (path "/729eee83-acb9-4794-a583-aef43df0c6ef"
           (reference "#PWR07") (unit 1)
         )
@@ -2065,7 +2077,7 @@
     (pin "8" (uuid 604a561e-f520-4f26-8d66-4145e8a46b9e))
     (pin "9" (uuid c46b387a-06ef-4e5c-ad44-8216e2e6e356))
     (instances
-      (project "skateboard_main_controller"
+      (project "skateboard_main_controller_kicad"
         (path "/729eee83-acb9-4794-a583-aef43df0c6ef"
           (reference "MT1") (unit 1)
         )
@@ -2090,7 +2102,7 @@
     )
     (pin "1" (uuid af41298d-b09f-4fbb-9138-8e402b2088cc))
     (instances
-      (project "skateboard_main_controller"
+      (project "skateboard_main_controller_kicad"
         (path "/729eee83-acb9-4794-a583-aef43df0c6ef"
           (reference "#PWR013") (unit 1)
         )
@@ -2115,7 +2127,7 @@
     )
     (pin "1" (uuid 3fc3f6a5-8161-4b45-bc3c-46961ceb5c37))
     (instances
-      (project "skateboard_main_controller"
+      (project "skateboard_main_controller_kicad"
         (path "/729eee83-acb9-4794-a583-aef43df0c6ef"
           (reference "#PWR06") (unit 1)
         )
@@ -2141,7 +2153,7 @@
     (pin "1" (uuid eb248af2-c0c1-4639-9ca2-9f6e8e262def))
     (pin "2" (uuid 041a762c-66e9-4b02-ab06-917359fe9f63))
     (instances
-      (project "skateboard_main_controller"
+      (project "skateboard_main_controller_kicad"
         (path "/729eee83-acb9-4794-a583-aef43df0c6ef"
           (reference "C2") (unit 1)
         )
@@ -2166,7 +2178,7 @@
     )
     (pin "1" (uuid 944af239-6252-4d4d-8cbb-dc435a3363de))
     (instances
-      (project "skateboard_main_controller"
+      (project "skateboard_main_controller_kicad"
         (path "/729eee83-acb9-4794-a583-aef43df0c6ef"
           (reference "#PWR04") (unit 1)
         )
@@ -2192,7 +2204,7 @@
     (pin "1" (uuid 15a851fe-7c1c-4e20-972d-9315ec906616))
     (pin "2" (uuid 360ce314-3ffc-4acd-81ba-6a452d86aa18))
     (instances
-      (project "skateboard_main_controller"
+      (project "skateboard_main_controller_kicad"
         (path "/729eee83-acb9-4794-a583-aef43df0c6ef"
           (reference "C8") (unit 1)
         )
