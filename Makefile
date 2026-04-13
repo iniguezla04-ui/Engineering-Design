@@ -12,8 +12,8 @@ all: $(BIN_DIR)/controller.elf
 
 # link
 
-$(BIN_DIR)/controller.elf: $(OBJS) $(HEADERS) | $(BIN_DIR)
-	$(CC) $(LDFLAGS)  -o $@ $(OBJS)
+$(BIN_DIR)/controller.elf: $(OBJS) $(HEADERS) startup_ARMCM3.S | $(BIN_DIR)
+	$(CC) $(LDFLAGS) startup_ARMCM3.S -o $@ $(OBJS)
 
 # compile
 
