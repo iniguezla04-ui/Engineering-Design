@@ -7,6 +7,8 @@ extern unsigned int _edata;
 extern unsigned int _bss;
 extern unsigned int _ebss;
 
+// Defined in driver file
+extern void USART1_ISR(void);
 static void copy_data(void) {
 
     unsigned int* src_data_ptr = &_idata;
@@ -32,11 +34,13 @@ void reset_isr(void) {
     // Don't return from main
     while (1);
 }
-
+    
 void isr_hardfault(void) {
     while (1);
 }
 
+#define PAD5    0,0,0,0,0
+#define PAD10   PAD5,PAD5
 #define IVT_ARRAY_SIZE 75U
 typedef void(*isr_t)(void);
 __attribute((used, section(".ivt")))
@@ -45,5 +49,12 @@ static const isr_t ivt[IVT_ARRAY_SIZE] = {
     (isr_t) &_stack,
     reset_isr,
     0,
-    isr_hardfault
+    isr_hardfault,
+    PAD10,
+    PAD10,
+    PAD10,
+    PAD10,
+    PAD5,
+    0,
+    USART1_ISR
 };
