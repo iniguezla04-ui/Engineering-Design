@@ -1,9 +1,10 @@
 TARGET=cortex-m3
 CC=arm-none-eabi-gcc
-CFLAGS=-mcpu=$(TARGET) -mthumb -mfloat-abi=soft -O0 -g3 -Wall -I include/
+CFLAGS=-mcpu=$(TARGET) -mthumb -mfloat-abi=soft -O0 -g3 -Wall -I include/ -I $(STM32_HEADER_DIR)
 LDFLAGS=-T $(STARTUP_DIR)/STM32F103C8T6.ld --specs=nosys.specs -nostdlib -nolibc
 SRCS=$(wildcard src/*.c)
 OBJS=$(patsubst src/%.c, $(OBJ_DIR)/%.o, $(SRCS))
+STM32_HEADER_DIR=/home/jpmora403/tools/arm-gnu-toolchain/include/Include
 SRC_DIR=src/
 BIN_DIR=build/bin
 OBJ_DIR=build/obj
