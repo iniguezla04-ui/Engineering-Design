@@ -24,6 +24,7 @@ SECTIONS {
 
     .data : ALIGN(4) {
         
+        _data = .;
         *(.data*)
         . = ALIGN(4);
         _edata = .;
