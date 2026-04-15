@@ -49,5 +49,5 @@ static const isr_t ivt[IVT_ARRAY_SIZE] = {
     [0] = (isr_t)&_stack,
     [1] = reset_isr,
     [3] = isr_hardfault,
-    [37] = USART1_ISR
+    [53] = USART1_ISR
 };

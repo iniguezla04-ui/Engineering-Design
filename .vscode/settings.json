@@ -1,0 +1,9 @@
+{
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/home/jpmora403/Engineering_Design/build/bin",
+            "binaryPath": "/home/jpmora403/Engineering_Design/build/bin/controller.elf",
+            "binaryArgs": []
+        }
+    ]
+}

@@ -1,0 +1,7 @@
+# Wokwi Configuration File
+# Reference: https://docs.wokwi.com/vscode/project-config
+[wokwi]
+version = 1
+firmware = 'build/bin/controller.hex'
+elf = 'build/bin/controller.elf'
+gdbServerPort=3333

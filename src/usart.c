@@ -36,7 +36,7 @@ GPIOA->CRH |= (0xB << 4);   // Set CNF=10 and MODE=11 (0b1011 = 0xB)
     // Enable peripheral 
     USART1->CR1 = (1 << 13) | (1 << 3);
 
-    NVIC_EnableIRQ(37);
+    NVIC_EnableIRQ(53);
 
 
 
