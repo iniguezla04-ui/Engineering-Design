@@ -13,7 +13,7 @@ static void copy_data(void) {
 
     unsigned int* src_data_ptr = &_idata;
     unsigned int* dst_data_ptr = &_data;
-    while (dst_data_ptr < &_data) {
+    while (dst_data_ptr < &_edata) {
         *dst_data_ptr++ = *src_data_ptr++;
     }
 }
@@ -46,15 +46,8 @@ typedef void(*isr_t)(void);
 __attribute((used, section(".ivt")))
 static const isr_t ivt[IVT_ARRAY_SIZE] = {
     
-    (isr_t) &_stack,
-    reset_isr,
-    0,
-    isr_hardfault,
-    PAD10,
-    PAD10,
-    PAD10,
-    PAD10,
-    PAD5,
-    0,
-    USART1_ISR
+    [0] = (isr_t)&_stack,
+    [1] = reset_isr,
+    [3] = isr_hardfault,
+    [37] = USART1_ISR
 };

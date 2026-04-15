@@ -15,6 +15,9 @@ all: $(BIN_DIR)/controller.hex
 $(BIN_DIR)/controller.hex: $(BIN_DIR)/controller.elf
 	arm-none-eabi-objcopy -O ihex $< $@
 
+simulate: $(BIN_DIR)/controller.elf
+	qemu-system-arm -M stm32vldiscovery -kernel $< -serial stdio
+
 # link
 
 $(BIN_DIR)/controller.elf: $(OBJS) $(HEADERS) $(BIN_DIR)/startup_ARMCM3.o | $(BIN_DIR)
@@ -38,3 +41,4 @@ $(BIN_DIR):
 clean: 
 	rm -rf build/obj/* \
 	rm -rf build/bin/*
+
