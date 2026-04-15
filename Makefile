@@ -23,7 +23,7 @@ simulate-debug: $(BIN_DIR)/controller.elf
 
 debug: $(BIN_DIR)/controller.elf
 	gdb-multiarch build/bin/controller.elf \
-	-ex "target remote :1234" \
+	-ex "target remote :3333" \
 	-ex "layout split" \
 	-ex "break main" \
 	-ex "continue"

@@ -19,14 +19,21 @@ void USART1_ISR(void) {
 }
 
 void usart_init(void) {
-    
+    // 1. Enable GPIOA clock (Bit 2 in APB2ENR)
+RCC->APB2ENR |= (1 << 2);
+
+// 2. Configure PA9 (TX) as Alternate Function Push-Pull
+// Each pin in CRH takes 4 bits. PA9 is the second group (bits 4-7).
+// We want: Mode = 11 (Output 50MHz), CNF = 10 (Alt Function PP) -> 0xB
+GPIOA->CRH &= ~(0xF << 4);  // Clear current configuration for PA9
+GPIOA->CRH |= (0xB << 4);   // Set CNF=10 and MODE=11 (0b1011 = 0xB)    
+    // Enable clock to usart
+    RCC->APB2ENR |= 1 << 14;
+
     // 115,200 Baud @8Mhz ; USART1DIV = 0d4->34
     USART1->BRR |= 0x45;
 
-    // Enable clock to uart
-    RCC->APB2ENR |= 1 << 14;
-
-    // Enable peripheral and TXE interrupts
+    // Enable peripheral 
     USART1->CR1 = (1 << 13) | (1 << 3);
 
     NVIC_EnableIRQ(37);
@@ -40,7 +47,7 @@ void putChar(char c) {
     if (bufferIsFull()) return;
     
 // Disable interrupts for safety
-    USART1->CR1 &= 0x3FFF;
+    USART1->CR1 &= ~(1 << 7);
 
     ringBuffer.data[ringBuffer.tail] = c;
     if (ringBuffer.tail == RING_BUFFER_SIZE - 1) 
@@ -48,7 +55,7 @@ void putChar(char c) {
     else 
         ringBuffer.tail++;
 
-    USART1->CR1 |= 1 << 13;
+    USART1->CR1 |= (1 << 7);
 
 }
 
