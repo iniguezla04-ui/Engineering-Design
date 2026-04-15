@@ -7,7 +7,9 @@ int main() {
     __enable_irq();
 
     while (1) {
+        while(bufferIsFull());
         putChar('7');
+        while(bufferIsFull());
         putChar('\n');
     }
 }
