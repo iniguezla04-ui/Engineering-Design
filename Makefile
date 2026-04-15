@@ -18,6 +18,16 @@ $(BIN_DIR)/controller.hex: $(BIN_DIR)/controller.elf
 simulate: $(BIN_DIR)/controller.elf
 	qemu-system-arm -M stm32vldiscovery -kernel $< -serial stdio
 
+simulate-debug: $(BIN_DIR)/controller.elf
+	qemu-system-arm -M stm32vldiscovery -kernel $< -serial stdio -s -S
+
+debug: $(BIN_DIR)/controller.elf
+	gdb-multiarch build/bin/controller.elf \
+	-ex "target remote :1234" \
+	-ex "layout split" \
+	-ex "break main" \
+	-ex "continue"
+
 # link
 
 $(BIN_DIR)/controller.elf: $(OBJS) $(HEADERS) $(BIN_DIR)/startup_ARMCM3.o | $(BIN_DIR)

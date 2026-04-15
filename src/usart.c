@@ -1,7 +1,7 @@
 #include "usart.h"
 #include "controller.h"
 
-ring_buffer_t ringBuffer;
+volatile ring_buffer_t ringBuffer;
 
 void USART1_ISR(void) {
     
@@ -27,18 +27,26 @@ void usart_init(void) {
     RCC->APB2ENR |= 1 << 14;
 
     // Enable peripheral and TXE interrupts
-    USART1->CR1 = (1 << 13) | (1 << 7) | (1 << 3);
+    USART1->CR1 = (1 << 13) | (1 << 3);
+
+    NVIC_EnableIRQ(37);
+
+
 
     return;
 }
 
 void putChar(char c) {
-    // Disable interrupts for safety
-    USART1->CR1 &= 0x3FFF;
     if (bufferIsFull()) return;
+    
+// Disable interrupts for safety
+    USART1->CR1 &= 0x3FFF;
 
     ringBuffer.data[ringBuffer.tail] = c;
-    ringBuffer.tail++;
+    if (ringBuffer.tail == RING_BUFFER_SIZE - 1) 
+        ringBuffer.tail = 0;
+    else 
+        ringBuffer.tail++;
 
     USART1->CR1 |= 1 << 13;
 
