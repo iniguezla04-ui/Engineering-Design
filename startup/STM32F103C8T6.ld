@@ -1,7 +1,7 @@
 MEMORY {
    
     flash (rx) : ORIGIN = 0x8000000, LENGTH = 64K
-    ram (rwx) : ORIGIN = 0x20000000, LENGTH = 20K
+    ram (rwx) : ORIGIN = 0x20000000, LENGTH = 8K
 }
 
 _eram = ORIGIN(ram) + LENGTH(ram);

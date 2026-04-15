@@ -1,5 +1,8 @@
+#ifndef USART_H
+#define USART_H
+
 void USART1_ISR(void);
-void usart1_init(void);
+void usart_init(void);
 
 #define RING_BUFFER_SIZE 16
 
@@ -11,3 +14,6 @@ typedef struct {
 
 int bufferIsFull(void);
 int bufferIsEmpty(void);
+void putChar(char c);
+
+#endif

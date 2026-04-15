@@ -23,6 +23,9 @@ void usart_init(void) {
     // 115,200 Baud @8Mhz ; USART1DIV = 0d4->34
     USART1->BRR |= 0x45;
 
+    // Enable clock to uart
+    RCC->APB2ENR |= 1 << 14;
+
     // Enable peripheral and TXE interrupts
     USART1->CR1 = (1 << 13) | (1 << 7) | (1 << 3);
 
