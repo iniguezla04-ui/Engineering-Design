@@ -7,8 +7,8 @@ int main() {
     __enable_irq();
 
     while (1) {
-        putChar('6');
-        putChar('7');
-        putChar('\n');
+        printf ("Hello");
+       for (int i = 0; i < 100000000; i++ )
+            __NOP();
     }
 }
