@@ -1,11 +1,13 @@
 TARGET=cortex-m3
 CC=arm-none-eabi-gcc
-CFLAGS=-mcpu=$(TARGET) -mthumb -mfloat-abi=soft -O0 -g3 -Wall \
+CFLAGS=-mcpu=$(TARGET) -mthumb -mfloat-abi=soft -g3 -Wall \
        -I include/ -I $(STM32_HEADER_DIR) \
        -I $(HAL_DIR) -I $(CMSIS_DEV) -I $(CMSIS_CORE) -Ithird_party/printf \
-       -DSTM32F103xB
+       -DSTM32F103xB \
+	   -ffunction-sections -fdata-sections
 
-LDFLAGS=-T $(STARTUP_DIR)/STM32F103C8T6.ld --specs=nosys.specs
+LDFLAGS=-T $(STARTUP_DIR)/STM32F103C8T6.ld --specs=nosys.specs \
+	   -Wl,--gc-sections
 
 SRC_DIR=src
 BIN_DIR=build/bin
