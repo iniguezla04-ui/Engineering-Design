@@ -5,7 +5,7 @@ CFLAGS=-mcpu=$(TARGET) -mthumb -mfloat-abi=soft -O0 -g3 -Wall \
        -I $(HAL_DIR) -I $(CMSIS_DEV) -I $(CMSIS_CORE) -Ithird_party/printf \
        -DSTM32F103xB
 
-LDFLAGS=-T $(STARTUP_DIR)/STM32F103C8T6.ld --specs=nosys.specs -nostdlib
+LDFLAGS=-T $(STARTUP_DIR)/STM32F103C8T6.ld --specs=nosys.specs
 
 SRC_DIR=src
 BIN_DIR=build/bin
@@ -21,13 +21,22 @@ STM32_HEADER_DIR=/home/jpmora403/tools/arm-gnu-toolchain/include/Include
 
 # Source files (Local + Printf + HAL Drivers + CMSIS System Core)
 SRCS=$(wildcard $(SRC_DIR)/*.c)
-EXT_SRCS=third_party/printf/printf.c \
-         $(HAL_SRC_DIR)/stm32f1xx_hal.c \
-         $(HAL_SRC_DIR)/stm32f1xx_hal_gpio.c \
-         $(HAL_SRC_DIR)/stm32f1xx_hal_rcc.c \
-         $(HAL_SRC_DIR)/stm32f1xx_hal_cortex.c \
-         $(CMSIS_SRC_DIR)/system_stm32f1xx.c
+# Automatically grab ALL HAL driver source files, printf, and CMSIS
+# Define only the specific HAL driver modules your project needs
+HAL_MODULES = stm32f1xx_hal.c \
+              stm32f1xx_hal_cortex.c \
+              stm32f1xx_hal_gpio.c \
+              stm32f1xx_hal_rcc.c \
+              stm32f1xx_hal_rcc_ex.c \
+              stm32f1xx_hal_dma.c \
+              stm32f1xx_hal_adc.c \
+              stm32f1xx_hal_adc_ex.c \
+              stm32f1xx_hal_uart.c
 
+# Combine them into EXT_SRCS
+EXT_SRCS = third_party/printf/printf.c \
+           $(addprefix $(HAL_SRC_DIR)/, $(HAL_MODULES)) \
+           $(CMSIS_SRC_DIR)/system_stm32f1xx.c
 # Object files mapping (translates local and external sources uniquely into OBJ_DIR)
 OBJS = $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(SRCS)) \
        $(patsubst %.c, $(OBJ_DIR)/%.o, $(notdir $(EXT_SRCS)))
