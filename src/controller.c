@@ -1,4 +1,5 @@
 #include "controller.h"
+#include "printf.h"
 
 
 int main() {
@@ -7,7 +8,7 @@ int main() {
     __enable_irq();
 
     while (1) {
-        printf ("Hello");
+        printf ("Hello\n");
        for (int i = 0; i < 100000000; i++ )
             __NOP();
     }
