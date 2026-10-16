@@ -1,9 +1,15 @@
 TARGET=cortex-m3
 CC=arm-none-eabi-gcc
-CFLAGS=-mcpu=$(TARGET) -mthumb -mfloat-abi=soft -O0 -g3 -Wall -I include/ -I $(STM32_HEADER_DIR)
+CFLAGS=-mcpu=$(TARGET) -mthumb -mfloat-abi=soft -O0 -g3 -Wall -I include/ -I $(STM32_HEADER_DIR) \
+	   -I $(HAL_DIR) -I $(CMSIS_DEV) -I $(CMSIS_CORE) -Ithird_party/printf
 LDFLAGS=-T $(STARTUP_DIR)/STM32F103C8T6.ld --specs=nosys.specs -nostdlib -nolibc
 SRCS=$(wildcard src/*.c)
-OBJS=$(patsubst src/%.c, $(OBJ_DIR)/%.o, $(SRCS))
+SRCS+=third_party/printf/printf.c
+OBJS=$(patsubst src/%.c, $(OBJ_DIR)/%.o, $(SRCS)) \
+	 $(patsubst %.c, $(OBJ_DIR)/%.o, $(notdir 
+HAL_DIR=third_party/stm32f1xx_hal_driver/Inc
+CMSIS_DEV=third_party/cmsis_device_f1/Include
+CMSIS_CORE=third_party/cmsis_core/CMSIS/Core/Include
 STM32_HEADER_DIR=/home/jpmora403/tools/arm-gnu-toolchain/include/Include
 SRC_DIR=src/
 BIN_DIR=build/bin
@@ -49,6 +55,4 @@ $(BIN_DIR):
 .PHONY: clean all
 
 clean: 
-	rm -rf build/obj/* \
-	rm -rf build/bin/*
-
+	rm -rf build
