@@ -4,10 +4,11 @@ CFLAGS=-mcpu=$(TARGET) -mthumb -mfloat-abi=soft -g3 -Wall \
 	-I include/ -I $(STM32_HEADER_DIR) \
 	-I $(HAL_DIR) -I $(CMSIS_DEV) -I $(CMSIS_CORE) -Ithird_party/printf \
 	-DSTM32F103xB \
-	-ffunction-sections -fdata-sections
+	-ffunction-sections -fdata-sections -ffreestanding
 
 LDFLAGS=-T $(STARTUP_DIR)/STM32F103C8T6.ld --specs=nosys.specs \
-	-Wl,--gc-sections
+	-Wl,--gc-sections \
+	-nostdlib
 
 SRC_DIR=src
 BIN_DIR=build/bin
