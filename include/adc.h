@@ -20,13 +20,17 @@
  * @return: None
  * @brief: Initialize the ADC
  */
-void adc_init(void);
+static void adc_init(void);
 /*
  * @param in8: Pointer to store the value read from ADC channel 8 (PB0)
  * @param in9: Pointer to store the value read from ADC channel 9 (PB1)
  * @return: None
  * @brief: Read values from ADC channels
  */
-void adc_read(uint32_t *in8, uint32_t *in9);
-
+static void adc_read(uint32_t *in8, uint32_t *in9);
+/*
+ * @return: None
+ * @brief: Error handler function to handle errors during ADC operations
+*/
+void Error_Handler(void);
 #endif
