@@ -33,13 +33,13 @@ void usart_init(void) {
     return;
 }
 
-void putChar(char c) {
+void _putchar(char character) {
     if (bufferIsFull()) return;
     
 // Disable interrupts for safety
     USART1->CR1 &= ~(1 << 7);
 
-    ringBuffer.data[ringBuffer.tail] = c;
+    ringBuffer.data[ringBuffer.tail] = character;
     if (ringBuffer.tail == RING_BUFFER_SIZE - 1) 
         ringBuffer.tail = 0;
     else 
