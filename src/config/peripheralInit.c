@@ -1,6 +1,6 @@
 #include "stm32f1xx.h"
 #include "stm32f1xx_hal.h"
-#include "pppInit.h"
+#include "peripheralInit.h"
 
 TIM_HandleTypeDef  htim1;
 ADC_HandleTypeDef  hadc1;

@@ -2,7 +2,7 @@
 #include "stm32f1xx_hal.h"
 #include "controller.h"
 #include "clockConfig.h"
-#include "pppInit.h"
+#include "peripheralInit.h"
 #include "printf.h"
 
 #define MAX 0xFFFFFFFUL
