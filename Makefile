@@ -6,9 +6,7 @@ CFLAGS=-mcpu=$(TARGET) -mthumb -mfloat-abi=soft -g3 -Wall \
 	-DSTM32F103xB \
 	-ffunction-sections -fdata-sections -ffreestanding
 
-LDFLAGS=-T $(STARTUP_DIR)/STM32F103C8T6.ld --specs=nosys.specs \
-	-Wl,--gc-sections \
-	-nostdlib
+LDFLAGS=-T $(STARTUP_DIR)/STM32F103C8T6.ld --specs=nano.specs --specs=nosys.specs -Wl,--gc-sections -lc -lgcc
 
 SRC_DIR=src
 BIN_DIR=build/bin
@@ -32,7 +30,10 @@ HAL_MODULES = stm32f1xx_hal.c \
 	stm32f1xx_hal_dma.c \
 	stm32f1xx_hal_adc.c \
 	stm32f1xx_hal_adc_ex.c \
-	stm32f1xx_hal_uart.c
+	stm32f1xx_hal_uart.c \
+	third_party/stm32f1xx_hal_driver/Src/stm32f1xx_hal_tim.c \
+	third_party/stm32f1xx_hal_driver/Src/stm32f1xx_hal_tim_ex.c \
+	third_party/stm32f1xx_hal_driver/Src/stm32f1xx_hal_spi.c 
 
 EXT_SRCS = third_party/printf/printf.c \
 	$(addprefix $(HAL_SRC_DIR)/, $(HAL_MODULES)) \

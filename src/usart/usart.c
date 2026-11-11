@@ -28,7 +28,7 @@ void usart_init(void) {
 
     // Enable peripheral 
     USART1->CR1 = (1 << 13) | (1 << 3);
-
+    //TODO: set NVIC priority
     NVIC_EnableIRQ(53);
     return;
 }
