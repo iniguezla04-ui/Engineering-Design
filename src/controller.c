@@ -16,6 +16,7 @@ int main(void) {
     TIM1_PWM_Init();
     ADC1_Init();
     SPI1_Init();
+    usart_init();
 
     while (1) {
         printf("fuck");
