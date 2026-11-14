@@ -45,6 +45,9 @@ OBJS = $(addprefix $(OBJ_DIR)/, $(notdir $(SRCS:.c=.o))) \
 
 VPATH = $(shell find $(SRC_DIR) -type d)
 
+SERIAL_PORT ?= /dev/ttyUSB0
+FLASH ?= 115200
+
 all: $(BIN_DIR)/controller.hex success
 
 success: $(BIN_DIR)/controller.hex
@@ -92,7 +95,10 @@ $(OBJ_DIR):
 $(BIN_DIR):
 	mkdir -p $(BIN_DIR)
 
-.PHONY: clean all success
+.PHONY: clean all success flash
+
+flash: $(BIN_DIR)/controller.hex
+	stm32flash -w $< -v -g 0x08000000 -b $(FLASH_BAUD) $(SERIAL_PORT)
 
 clean:
 	rm -rf build
