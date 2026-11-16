@@ -46,7 +46,8 @@ OBJS = $(addprefix $(OBJ_DIR)/, $(notdir $(SRCS:.c=.o))) \
 VPATH = $(shell find $(SRC_DIR) -type d)
 
 SERIAL_PORT ?= /dev/ttyUSB0
-FLASH ?= 115200
+FLASH_BAUD ?= 115200
+MONITOR_BAUD ?= 115200
 
 all: $(BIN_DIR)/controller.hex success
 
@@ -95,10 +96,26 @@ $(OBJ_DIR):
 $(BIN_DIR):
 	mkdir -p $(BIN_DIR)
 
-.PHONY: clean all success flash
+.PHONY: clean all success flash monitor
 
 flash: $(BIN_DIR)/controller.hex
 	stm32flash -w $< -v -g 0x08000000 -b $(FLASH_BAUD) $(SERIAL_PORT)
 
 clean:
 	rm -rf build
+
+# Open a serial terminal on the board's UART. Exit with Ctrl-A then Ctrl-X.
+# WSL: attach the adapter first from an admin PowerShell on Windows:
+#   usbipd list                       (find the adapter's BUSID)
+#   usbipd bind --busid <BUSID>       (once per adapter)
+#   usbipd attach --wsl --busid <BUSID>   (after each replug)
+# Override the port or baud: make monitor SERIAL_PORT=/dev/ttyACM0 MONITOR_BAUD=9600
+monitor:
+	@if [ ! -e $(SERIAL_PORT) ]; then \
+		echo "$(SERIAL_PORT) not found. Ports present:"; \
+		ls /dev/ttyUSB* /dev/ttyACM* 2>/dev/null || echo "  (none)"; \
+		echo "On WSL, attach the adapter with usbipd (see comment above the monitor target)."; \
+		exit 1; \
+	fi
+	picocom -b $(MONITOR_BAUD) $(SERIAL_PORT) || \
+		(echo "If permission was denied: sudo usermod -aG dialout $$USER, then restart WSL"; exit 1)

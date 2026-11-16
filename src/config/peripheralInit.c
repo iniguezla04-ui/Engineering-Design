@@ -13,7 +13,7 @@ void TIM1_PWM_Init(void)
 {
   TIM_OC_InitTypeDef oc = {0};
   htim1.Instance               = TIM1;
-  htim1.Init.Prescaler         = 71;            // 1 MHz tick
+  htim1.Init.Prescaler         = HAL_RCC_GetPCLK2Freq() / 1000000U - 1U;  // 1 MHz tick (APB2 prescaler is 1, so TIM1 clock = PCLK2)
   htim1.Init.CounterMode       = TIM_COUNTERMODE_UP;
   htim1.Init.Period            = 999;           // 1 kHz
   htim1.Init.ClockDivision     = TIM_CLOCKDIVISION_DIV1;
@@ -54,7 +54,7 @@ void SPI1_Init(void)
   hspi1.Init.CLKPolarity       = SPI_POLARITY_LOW;   // match your device
   hspi1.Init.CLKPhase          = SPI_PHASE_1EDGE;    // match your device
   hspi1.Init.NSS               = SPI_NSS_SOFT;
-  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_8;  // 9 MHz
+  hspi1.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_32; // 64 MHz / 32 = 2 MHz: 256 CPU cycles per byte for the IT-mode ISR
   hspi1.Init.FirstBit          = SPI_FIRSTBIT_MSB;
   hspi1.Init.TIMode            = SPI_TIMODE_DISABLE;
   hspi1.Init.CRCCalculation    = SPI_CRCCALCULATION_DISABLE;

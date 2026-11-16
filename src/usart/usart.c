@@ -1,3 +1,4 @@
+#include "stm32f1xx_hal.h"
 #include "usart.h"
 #include "controller.h"
 
@@ -23,34 +24,32 @@ void usart_init(void) {
     GPIOA->CRH &= ~(0xF << 4);  
     GPIOA->CRH |= (0xB << 4);   
 
-    // 115,200 Baud @8Mhz ; USART1DIV = 0d4->34
-    USART1->BRR |= 0x45;
+    // BRR = PCLK2 / baud, rounded. Computed from the live clock so it stays
+    // right if the clock changes. 64 MHz: 556 (0x22C) -> 115108 baud, -0.08%
+    USART1->BRR = (HAL_RCC_GetPCLK2Freq() + 115200U / 2U) / 115200U;
 
     // Enable peripheral 
     USART1->CR1 = (1 << 13) | (1 << 3);
-    //TODO: set NVIC priority
-    NVIC_EnableIRQ(53);
+    NVIC_SetPriority(USART1_IRQn, 6);
+    NVIC_EnableIRQ(USART1_IRQn);
     return;
 }
 
+// Called by printf for every character. Only call printf from main():
+// it waits for room in the buffer, which would hang inside an ISR.
 void _putchar(char character) {
-    if (bufferIsFull()) return;
-    
-// Disable interrupts for safety
-    USART1->CR1 &= ~(1 << 7);
+    while (bufferIsFull()) { }   // the USART ISR frees space as it sends
 
+    // Only this function moves tail and only the ISR moves head, so no lock is needed
     ringBuffer.data[ringBuffer.tail] = character;
     if (ringBuffer.tail == RING_BUFFER_SIZE - 1) 
         ringBuffer.tail = 0;
     else 
         ringBuffer.tail++;
 
+    // Enable TXE interrupt. If the transmitter is idle (TXE already set) the
+    // NVIC fires USART1_ISR right away; the ISR disables it when the buffer is empty.
     USART1->CR1 |= (1 << 7);
-
-    if (USART1->SR & (1 << 7))
-        USART1_ISR();
-
-
 }
 
 int bufferIsFull() {
