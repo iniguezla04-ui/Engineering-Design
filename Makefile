@@ -1,7 +1,7 @@
 TARGET=cortex-m3
 CC=arm-none-eabi-gcc
 CFLAGS=-mcpu=$(TARGET) -mthumb -mfloat-abi=soft -g3 -Wall \
-	-I include/ -I $(STM32_HEADER_DIR) \
+	-I include/ \
 	-I $(HAL_DIR) -I $(CMSIS_DEV) -I $(CMSIS_CORE) -Ithird_party/printf \
 	-DSTM32F103xB \
 	-ffunction-sections -fdata-sections -ffreestanding
@@ -18,9 +18,22 @@ HAL_SRC_DIR=third_party/stm32f1xx_hal_driver/Src
 CMSIS_DEV=third_party/cmsis_device_f1/Include
 CMSIS_CORE=third_party/cmsis_core/CMSIS/Core/Include
 CMSIS_SRC_DIR=third_party/cmsis_device_f1/Source/Templates
-STM32_HEADER_DIR=/home/jpmora403/tools/arm-gnu-toolchain/include/Include
 
 SRCS=$(shell find $(SRC_DIR) -name '*.c')
+
+# Stop early with a clear message if the git submodules were never fetched
+# (skipped for `make clean`, which doesn't need them)
+SUBMODULE_FILES = third_party/printf/printf.c $(HAL_SRC_DIR)/stm32f1xx_hal.c \
+	$(CMSIS_DEV)/stm32f1xx.h $(CMSIS_CORE)/core_cm3.h
+ifneq ($(filter-out clean,$(or $(MAKECMDGOALS),all)),)
+ifneq ($(words $(wildcard $(SUBMODULE_FILES))),$(words $(SUBMODULE_FILES)))
+$(error third_party/ submodules are missing. Run: git submodule update --init)
+endif
+endif
+
+# $(call need,<program>,<install hint>): fail with the hint if <program> isn't on PATH.
+# The hint must not contain commas.
+need = @command -v $(1) >/dev/null 2>&1 || { echo "Error: '$(1)' not found on PATH. $(2)"; exit 1; }
 
 HAL_MODULES = stm32f1xx_hal.c \
 	stm32f1xx_hal_cortex.c \
@@ -60,17 +73,26 @@ $(BIN_DIR)/controller.hex: $(BIN_DIR)/controller.elf
 	arm-none-eabi-objcopy -O ihex $< $@
 
 simulate: $(BIN_DIR)/controller.elf
+	$(call need,qemu-system-arm,Install it: sudo apt install qemu-system-arm)
 	qemu-system-arm -M stm32vldiscovery -kernel $< -serial stdio
 
 simulate-debug: $(BIN_DIR)/controller.elf
+	$(call need,qemu-system-arm,Install it: sudo apt install qemu-system-arm)
 	qemu-system-arm -M stm32vldiscovery -kernel $< -serial stdio -s -S
 
 debug: $(BIN_DIR)/controller.elf
+	$(call need,gdb-multiarch,Install it: sudo apt install gdb-multiarch)
 	gdb-multiarch build/bin/controller.elf \
 	-ex "target remote :3333" \
 	-ex "layout split" \
 	-ex "break main" \
 	-ex "continue"
+
+# Check for the compiler once, before the first object is built
+$(OBJS) $(BIN_DIR)/startup_ARMCM3.o: | check-toolchain
+
+check-toolchain:
+	$(call need,$(CC),Install it with: sudo apt install gcc-arm-none-eabi  -- or download the Arm GNU Toolchain and add its bin/ folder to PATH in ~/.bashrc)
 
 $(BIN_DIR)/controller.elf: $(OBJS) $(BIN_DIR)/startup_ARMCM3.o | $(BIN_DIR)
 	$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) -lgcc
@@ -96,9 +118,10 @@ $(OBJ_DIR):
 $(BIN_DIR):
 	mkdir -p $(BIN_DIR)
 
-.PHONY: clean all success flash monitor
+.PHONY: clean all success flash monitor check-toolchain simulate simulate-debug debug
 
 flash: $(BIN_DIR)/controller.hex
+	$(call need,stm32flash,Install it: sudo apt install stm32flash)
 	stm32flash -w $< -v -g 0x08000000 -b $(FLASH_BAUD) $(SERIAL_PORT)
 
 clean:
@@ -111,6 +134,7 @@ clean:
 #   usbipd attach --wsl --busid <BUSID>   (after each replug)
 # Override the port or baud: make monitor SERIAL_PORT=/dev/ttyACM0 MONITOR_BAUD=9600
 monitor:
+	$(call need,picocom,Install it: sudo apt install picocom)
 	@if [ ! -e $(SERIAL_PORT) ]; then \
 		echo "$(SERIAL_PORT) not found. Ports present:"; \
 		ls /dev/ttyUSB* /dev/ttyACM* 2>/dev/null || echo "  (none)"; \
