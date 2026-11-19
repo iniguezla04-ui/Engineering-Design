@@ -93,7 +93,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
     if (tim_ticks % IMU_DIVIDER == 0) imu_start_read();
 }
 
-// ADC end of conversion (PA0)
+// ADC end of conversion (PB0 / J1)
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc) {
     if (hadc->Instance != ADC1) return;
     adc_value = (uint16_t)HAL_ADC_GetValue(hadc);

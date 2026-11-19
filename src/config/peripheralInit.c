@@ -39,7 +39,7 @@ void ADC1_Init(void)
   hadc1.Init.NbrOfConversion       = 1;
   if (HAL_ADC_Init(&hadc1) != HAL_OK) Error_Handler();
 
-  ch.Channel      = ADC_CHANNEL_0;               // PA0
+  ch.Channel      = ADC_CHANNEL_8;               // PB0 = ADC12_IN8 (J1)
   ch.Rank         = ADC_REGULAR_RANK_1;
   ch.SamplingTime = ADC_SAMPLETIME_55CYCLES_5;
   if (HAL_ADC_ConfigChannel(&hadc1, &ch) != HAL_OK) Error_Handler();

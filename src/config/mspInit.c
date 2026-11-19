@@ -29,9 +29,9 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef *h)
   if (h->Instance == ADC1) {
     GPIO_InitTypeDef g = {0};
     __HAL_RCC_ADC1_CLK_ENABLE();
-    __HAL_RCC_GPIOA_CLK_ENABLE();
-    g.Pin = GPIO_PIN_0; g.Mode = GPIO_MODE_ANALOG;
-    HAL_GPIO_Init(GPIOA, &g);
+    __HAL_RCC_GPIOB_CLK_ENABLE();
+    g.Pin = GPIO_PIN_0; g.Mode = GPIO_MODE_ANALOG;   // PB0 = ADC12_IN8 (J1)
+    HAL_GPIO_Init(GPIOB, &g);
 
     HAL_NVIC_SetPriority(ADC1_2_IRQn, 3, 0);
     HAL_NVIC_EnableIRQ(ADC1_2_IRQn);
