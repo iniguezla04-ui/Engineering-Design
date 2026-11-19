@@ -6,6 +6,24 @@ CFLAGS=-mcpu=$(TARGET) -mthumb -mfloat-abi=soft -g3 -Wall \
 	-DSTM32F103xB \
 	-ffunction-sections -fdata-sections -ffreestanding
 
+# Scope test: fixed PWM duty in percent, ignoring the ADC.
+#   make clean && make flash PWM_TEST_DUTY=50
+# Run make clean again before going back to a normal build.
+ifdef PWM_TEST_DUTY
+CFLAGS += -DPWM_TEST_DUTY=$(PWM_TEST_DUTY)
+endif
+
+# Scope test: sweep the duty 0% -> 100% -> 0% in 1% steps, ignoring the ADC.
+# PWM_SWEEP_STEP_MS sets how long each step is held (default 50 ms -> 10 s per cycle).
+#   make clean && make flash PWM_TEST_SWEEP=1
+#   make clean && make flash PWM_TEST_SWEEP=1 PWM_SWEEP_STEP_MS=20
+ifdef PWM_TEST_SWEEP
+CFLAGS += -DPWM_TEST_SWEEP
+endif
+ifdef PWM_SWEEP_STEP_MS
+CFLAGS += -DPWM_SWEEP_STEP_MS=$(PWM_SWEEP_STEP_MS)
+endif
+
 LDFLAGS=-T $(STARTUP_DIR)/STM32F103C8T6.ld --specs=nano.specs --specs=nosys.specs -Wl,--gc-sections -lc -lgcc
 
 SRC_DIR=src

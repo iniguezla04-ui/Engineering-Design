@@ -9,6 +9,10 @@
 #define PRINT_PERIOD_MS 100   // status line rate (10 Hz)
 #define IMU_DIVIDER     10    // IMU read every 10 TIM2 ticks -> 100 Hz
 
+#ifndef PWM_SWEEP_STEP_MS
+#define PWM_SWEEP_STEP_MS 50  // sweep test: ms per 1% step (10 s per full cycle)
+#endif
+
 extern TIM_HandleTypeDef htim2;
 extern ADC_HandleTypeDef hadc1;
 
@@ -86,7 +90,18 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
 
     // PWM duty follows the last ADC reading. CCR2 is preloaded, so the new
     // value only takes effect at the next period boundary (no glitches).
+#if defined(PWM_TEST_SWEEP)
+    // Scope test build: triangle sweep 0% -> 100% -> 0% in 1% steps, ADC ignored.
+    // One step every PWM_SWEEP_STEP_MS ticks (1 tick = 1 ms), 200 steps per cycle.
+    uint32_t step = (tim_ticks / (PWM_SWEEP_STEP_MS)) % 200U;
+    uint32_t pct  = step <= 100U ? step : 200U - step;
+    uint32_t ccr  = (pct * (__HAL_TIM_GET_AUTORELOAD(htim) + 1U)) / 100U;
+#elif defined(PWM_TEST_DUTY)
+    // Scope test build: fixed duty in percent, ADC ignored
+    uint32_t ccr = ((uint32_t)(PWM_TEST_DUTY) * (__HAL_TIM_GET_AUTORELOAD(htim) + 1U)) / 100U;
+#else
     uint32_t ccr = ((uint32_t)adc_value * (__HAL_TIM_GET_AUTORELOAD(htim) + 1U)) / 4096U;
+#endif
     __HAL_TIM_SET_COMPARE(htim, TIM_CHANNEL_2, ccr);
 
     HAL_ADC_Start_IT(&hadc1);
