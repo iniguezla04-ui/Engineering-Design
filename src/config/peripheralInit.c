@@ -2,29 +2,33 @@
 #include "stm32f1xx_hal.h"
 #include "peripheralInit.h"
 
-TIM_HandleTypeDef  htim1;
+TIM_HandleTypeDef  htim2;
 ADC_HandleTypeDef  hadc1;
 UART_HandleTypeDef huart1;
 SPI_HandleTypeDef  hspi1;
 
 
 
-void TIM1_PWM_Init(void)
+void TIM2_PWM_Init(void)
 {
   TIM_OC_InitTypeDef oc = {0};
-  htim1.Instance               = TIM1;
-  htim1.Init.Prescaler         = HAL_RCC_GetPCLK2Freq() / 1000000U - 1U;  // 1 MHz tick (APB2 prescaler is 1, so TIM1 clock = PCLK2)
-  htim1.Init.CounterMode       = TIM_COUNTERMODE_UP;
-  htim1.Init.Period            = 999;           // 1 kHz
-  htim1.Init.ClockDivision     = TIM_CLOCKDIVISION_DIV1;
-  htim1.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
-  if (HAL_TIM_PWM_Init(&htim1) != HAL_OK) Error_Handler();
+  htim2.Instance               = TIM2;
+  // TIM2 is on APB1. With the APB1 prescaler != 1 (it is /2), the timer clock
+  // is 2 x PCLK1 = 64 MHz. Divide down to a 1 MHz tick.
+  uint32_t tim_clk = HAL_RCC_GetPCLK1Freq();
+  if ((RCC->CFGR & RCC_CFGR_PPRE1) != RCC_CFGR_PPRE1_DIV1) tim_clk *= 2U;
+  htim2.Init.Prescaler         = tim_clk / 1000000U - 1U;
+  htim2.Init.CounterMode       = TIM_COUNTERMODE_UP;
+  htim2.Init.Period            = 999;           // 1 kHz
+  htim2.Init.ClockDivision     = TIM_CLOCKDIVISION_DIV1;
+  htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
+  if (HAL_TIM_PWM_Init(&htim2) != HAL_OK) Error_Handler();
 
   oc.OCMode     = TIM_OCMODE_PWM1;
   oc.Pulse      = 500;                          // 50% duty
   oc.OCPolarity = TIM_OCPOLARITY_HIGH;
   oc.OCFastMode = TIM_OCFAST_DISABLE;
-  if (HAL_TIM_PWM_ConfigChannel(&htim1, &oc, TIM_CHANNEL_1) != HAL_OK) Error_Handler();
+  if (HAL_TIM_PWM_ConfigChannel(&htim2, &oc, TIM_CHANNEL_2) != HAL_OK) Error_Handler();
 }
 
 void ADC1_Init(void)

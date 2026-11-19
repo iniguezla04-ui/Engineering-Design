@@ -10,17 +10,17 @@ void HAL_MspInit(void)
 
 void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef *h)
 {
-  if (h->Instance == TIM1) {
+  if (h->Instance == TIM2) {
     GPIO_InitTypeDef g = {0};
-    __HAL_RCC_TIM1_CLK_ENABLE();
+    __HAL_RCC_TIM2_CLK_ENABLE();
     __HAL_RCC_GPIOA_CLK_ENABLE();
-    g.Pin = GPIO_PIN_8; g.Mode = GPIO_MODE_AF_PP; g.Speed = GPIO_SPEED_FREQ_HIGH;
+    // PA1 = TIM2_CH2 (default mapping, no remap) -> J4 pin 1
+    g.Pin = GPIO_PIN_1; g.Mode = GPIO_MODE_AF_PP; g.Speed = GPIO_SPEED_FREQ_HIGH;
     HAL_GPIO_Init(GPIOA, &g);
 
-    HAL_NVIC_SetPriority(TIM1_UP_IRQn, 2, 0);
-    HAL_NVIC_EnableIRQ(TIM1_UP_IRQn);
-    HAL_NVIC_SetPriority(TIM1_CC_IRQn, 2, 0);
-    HAL_NVIC_EnableIRQ(TIM1_CC_IRQn);
+    // One vector for update and capture/compare on TIM2
+    HAL_NVIC_SetPriority(TIM2_IRQn, 2, 0);
+    HAL_NVIC_EnableIRQ(TIM2_IRQn);
   }
 }
 

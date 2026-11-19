@@ -7,16 +7,16 @@
 #include "printf.h"
 
 #define PRINT_PERIOD_MS 100   // status line rate (10 Hz)
-#define IMU_DIVIDER     10    // IMU read every 10 TIM1 ticks -> 100 Hz
+#define IMU_DIVIDER     10    // IMU read every 10 TIM2 ticks -> 100 Hz
 
-extern TIM_HandleTypeDef htim1;
+extern TIM_HandleTypeDef htim2;
 extern ADC_HandleTypeDef hadc1;
 
 /* Written in ISRs, read in main() */
 static volatile uint16_t adc_value;
 static volatile uint32_t adc_count;
 static volatile uint32_t tim_ticks;
-static volatile uint16_t tim_latency_max;   // us from TIM1 update event to callback
+static volatile uint16_t tim_latency_max;   // us from TIM2 update event to callback
 
 int main(void) {
 
@@ -24,7 +24,7 @@ int main(void) {
     SystemClock_Config();
 
     GPIO_Init();
-    TIM1_PWM_Init();
+    TIM2_PWM_Init();
     ADC1_Init();
     SPI1_Init();
     usart_init();
@@ -34,8 +34,8 @@ int main(void) {
            id, id == IMU_WHO_AM_I_VALUE ? "ok" : "UNEXPECTED");
 
     // Init only configures; the _IT starts turn on the interrupt sources
-    if (HAL_TIM_Base_Start_IT(&htim1) != HAL_OK) Error_Handler();   // update IRQ @ 1 kHz
-    if (HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1) != HAL_OK) Error_Handler();
+    if (HAL_TIM_Base_Start_IT(&htim2) != HAL_OK) Error_Handler();   // update IRQ @ 1 kHz
+    if (HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2) != HAL_OK) Error_Handler();
 
     uint32_t next_print = HAL_GetTick();
     uint32_t last_ticks = 0, last_adc = 0, last_imu = 0;
@@ -56,8 +56,8 @@ int main(void) {
         imu_sample_t s;
         uint32_t nimu = imu_get(&s);
 
-        uint32_t ccr  = __HAL_TIM_GET_COMPARE(&htim1, TIM_CHANNEL_1);
-        uint32_t duty = ccr * 1000U / (__HAL_TIM_GET_AUTORELOAD(&htim1) + 1U);   // per mille
+        uint32_t ccr  = __HAL_TIM_GET_COMPARE(&htim2, TIM_CHANNEL_2);
+        uint32_t duty = ccr * 1000U / (__HAL_TIM_GET_AUTORELOAD(&htim2) + 1U);   // per mille
 
         const uint32_t scale = 1000U / PRINT_PERIOD_MS;   // counts per period -> Hz
         printf("t=%lu tim=%luHz lat<=%uus | adc=%4u (%luHz) pwm=%lu.%lu%% | "
@@ -75,19 +75,19 @@ int main(void) {
 
 /* ---- HAL callbacks (run in interrupt context; keep them short) ---- */
 
-// TIM1 update, 1 kHz: the control loop tick
+// TIM2 update, 1 kHz: the control loop tick
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
-    if (htim->Instance != TIM1) return;
+    if (htim->Instance != TIM2) return;
 
-    // TIM1 counts 1 us ticks from 0 after the update event, so CNT = latency
+    // TIM2 counts 1 us ticks from 0 after the update event, so CNT = latency
     uint16_t lat = (uint16_t)__HAL_TIM_GET_COUNTER(htim);
     if (lat > tim_latency_max) tim_latency_max = lat;
     tim_ticks++;
 
-    // PWM duty follows the last ADC reading. CCR1 is preloaded, so the new
+    // PWM duty follows the last ADC reading. CCR2 is preloaded, so the new
     // value only takes effect at the next period boundary (no glitches).
     uint32_t ccr = ((uint32_t)adc_value * (__HAL_TIM_GET_AUTORELOAD(htim) + 1U)) / 4096U;
-    __HAL_TIM_SET_COMPARE(htim, TIM_CHANNEL_1, ccr);
+    __HAL_TIM_SET_COMPARE(htim, TIM_CHANNEL_2, ccr);
 
     HAL_ADC_Start_IT(&hadc1);
     if (tim_ticks % IMU_DIVIDER == 0) imu_start_read();

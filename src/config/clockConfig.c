@@ -23,8 +23,8 @@ void SystemClock_Config(void)
                        RCC_CLOCKTYPE_PCLK1  | RCC_CLOCKTYPE_PCLK2;
   clk.SYSCLKSource   = RCC_SYSCLKSOURCE_PLLCLK;
   clk.AHBCLKDivider  = RCC_SYSCLK_DIV1;     // HCLK  = 64 MHz
-  clk.APB1CLKDivider = RCC_HCLK_DIV2;       // PCLK1 = 32 MHz (max 36)
-  clk.APB2CLKDivider = RCC_HCLK_DIV1;       // PCLK2 = 64 MHz: TIM1, ADC1, SPI1, USART1
+  clk.APB1CLKDivider = RCC_HCLK_DIV2;       // PCLK1 = 32 MHz (max 36); TIM2 clock = 2 x PCLK1 = 64 MHz
+  clk.APB2CLKDivider = RCC_HCLK_DIV1;       // PCLK2 = 64 MHz: ADC1, SPI1, USART1
   if (HAL_RCC_ClockConfig(&clk, FLASH_LATENCY_2) != HAL_OK) { while(1); }
 
   // ADC clock: 64 MHz / 6 = 10.67 MHz (max 14)

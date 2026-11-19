@@ -12,8 +12,7 @@ extern void USART1_ISR(void);
 // Defined in src/config/it.c
 extern void SysTick_Handler(void);
 extern void ADC1_2_IRQHandler(void);
-extern void TIM1_UP_IRQHandler(void);
-extern void TIM1_CC_IRQHandler(void);
+extern void TIM2_IRQHandler(void);
 extern void SPI1_IRQHandler(void);
 
 static void copy_data(void) {
@@ -59,8 +58,7 @@ static const isr_t ivt[IVT_ARRAY_SIZE] = {
     // Table index = 16 + IRQn
     [15] = SysTick_Handler,     // core exception, drives HAL_Delay()
     [34] = ADC1_2_IRQHandler,   // IRQ 18
-    [41] = TIM1_UP_IRQHandler,  // IRQ 25
-    [43] = TIM1_CC_IRQHandler,  // IRQ 27
+    [44] = TIM2_IRQHandler,     // IRQ 28
     [51] = SPI1_IRQHandler,     // IRQ 35
     [53] = USART1_ISR           // IRQ 37
 };
